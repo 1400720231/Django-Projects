@@ -18,6 +18,16 @@ class UserProfile(AbstractUser):
     def __str__(self):
         return self.username
 
+    def unread_nums(self):  # 获取未读的系统消息数
+        """
+        from operation.models import UserMessage这句话只能用在这，不能放在开头，
+        因为operation.models下面有一个引用：from users.models import UserProfile
+        这样的话两个models就会循环引用的， 可能会报错import errors !
+        所以放在这里，当条用unread_nums()函数的时候在调用一次
+        """
+        from operation.models import UserMessage
+        return UserMessage.objects.filter(user=self.id).count()
+
 
 class EmailVerifyRecord(models.Model):
     code = models.CharField(max_length=20, verbose_name='验证码')

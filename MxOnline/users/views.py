@@ -9,10 +9,13 @@ from django.views.generic import View
 from django.contrib.auth.hashers import make_password
 from utils.send_email import send_register_email
 from utils.mini_utils import LoginRequireMixin
+from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
 import json
-from operation.models import UserCourse, UserFavorite
+from operation.models import UserCourse, UserFavorite, UserMessage
 from organization.models import CourseOrg, Teacher
 from courses.models import Course
+
+
 # 登陆视图 ModelBackend这个参数很重要！！！！！！！！记得回来复习
 class CustomBackend(ModelBackend):
     # 自定义authenticate方法满足需求
@@ -62,6 +65,12 @@ class RegisterView(View):
                 user_profile.save()  # 这个就很尴尬了，非要加上force_inser=True才能从前端提交保存到数据库
                 # 但是我直接在后代文件中写save()就可以保存了，则会是为什么？？？
                 # 然后几天之后我直接调用save方法居然又能行了，这是真的尴尬了
+
+                # 把注册信息写近 UserMessage表的， 在个人中心我的消息中体现
+                user_message = UserMessage()
+                user_message.user = user_profile.id
+                user_message.message = "欢迎您的注册  ！！"
+                user_message.save()
                 send_register_email(user_name, 'register')
                 return render(request, "login.html")
         else:
@@ -329,3 +338,25 @@ class MyFavCourseView(LoginRequireMixin, View):
             'course_list': course_list
         }
         return render(request, 'usercenter-fav-course.html', context=context)
+
+
+class MymessageView(LoginRequireMixin, View):
+    """
+    我的消息
+    """
+    def get(self, request):
+        all_messages = UserMessage.objects.filter(user=request.user.id)
+
+        # 对机构分页,这里是第三方库pagenation的内置格式，只是换了一下数据字段
+        try:
+            page = request.GET.get('page', 1)  # 这个page字段是安装库后自己有的，不用管
+        except PageNotAnInteger:
+            page = 1
+        p = Paginator(all_messages, 3, request=request)  # 教程文档中没有3这个参数，其实个参数在源码中是per_page,这个参数表示每页显示几个的意思
+        messages = p.page(page)
+
+        context = {
+            'messages': messages
+
+        }
+        return render(request, 'usercenter-message.html', context)

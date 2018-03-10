@@ -26,7 +26,9 @@
                         {% if user.is_authenticated %}
                         <a style="color:white;margin-right: 10px" class="fr loginbtn" href="{% url 'logout' %}">退出</a>
                         <a style="color:white" class="fr registerbtn" href="{% url 'users:info' %}">{{ user.username }}</a>
-
+                        <a href="{% url 'users:mymessage' %}">
+                            <div class="msg-num"><span id="MsNum">{{ request.user.unread_nums }}</span></div>
+                        </a>
                         {% else %}
                         <a style="color:white" class="fr registerbtn" href="{% url 'register' %}">注册</a>
                         <a style="color:white" class="fr loginbtn" href="{% url 'login' %}">登录</a>

@@ -28,8 +28,8 @@
 
 						    <div class="personal">
                               <dl class="user fr">
-                                <dd>{{ user.username }}<a href="{% url 'logout' %}">退出</a><img class="down fr" src="/static/images/top_down.png"/></dd>
-                                <dt><img width="20" height="20" src="../media/image/2016/12/default_big_14.png"/></dt>
+                                <dd>{{ user.username }}<a href="{% url 'logout' %}">退出</a><img class="down fr" src="{{ MEDIA_URL }}{{ user.image }}"/></dd>
+                                <dt><img width="20" height="20" src="{{ MEDIA_URL }}{{ user.image }}"/></dt>
                               </dl>
                              <div class="userdetail">
                             	<dl>

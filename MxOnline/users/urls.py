@@ -2,7 +2,7 @@
 # author:mini_panda
 from django.conf.urls import url, include
 from .views import UserInfoView, MyCourseView, UploadImageView, UpdatePwdView, SendEmailCodeView, UpdateEmailView
-from .views import MyFavOrgView, MyFavTeacherView, MyFavCourseView
+from .views import MyFavOrgView, MyFavTeacherView, MyFavCourseView, MymessageView
 urlpatterns = [
     # 用户信息
     url(r'^info/$', UserInfoView.as_view(), name="info"),
@@ -22,4 +22,6 @@ urlpatterns = [
     url(r'^myfav/teacher/$', MyFavTeacherView.as_view(), name='myfav_teacher'),
     # 我收藏的课程
     url(r'^myfav/course/$', MyFavCourseView.as_view(), name='myfav_course'),
+    # 我的消息
+    url(r'^mymessage/$', MymessageView.as_view(), name='mymessage'),
 ]

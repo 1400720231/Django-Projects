@@ -34,6 +34,7 @@
                                 <dd>{{ user.username }}<img class="down fr" src="{% static 'images/top_down.png' %}"/></dd>
                                 <dt><img width="20" height="20" src="{{ MEDIA_URL }}{{ user.image }}"/></dt>
                             </dl>
+                            <!-下拉框显示的内容-->
                             <div class="userdetail">
                             	<dl>
 	                                <dt><img width="80" height="80" src="{{ MEDIA_URL }}{{ user.image }}"/></dt>
@@ -43,13 +44,13 @@
 	                                </dd>
                                 </dl>
                                 <div class="btn">
-	                                <a class="personcenter fl" href="usercenter-info.html">进入个人中心</a>
-	                                <a class="fr" href="/logout/">退出</a>
+	                                <a class="personcenter fl" href="{% url 'users:info' %}">进入个人中心</a>
+	                                <a class="fr" href="{% url 'logout' %}">退出</a>
                                 </div>
                             </div>
                         </div>
-                        <a href="usercenter-message.html">
-                            <div class="msg-num"><span id="MsgNum">0</span></div>
+                        <a href="{% url 'users:mymessage' %}">
+                            <div class="msg-num"><span id="MsgNum">{{ request.user.unread_nums }}</span></div>
                         </a>
 
 
@@ -85,14 +86,10 @@
 	<div class="wp list personal_list">
 	<div class="left">
         <ul>
-            <li class="active2"><a href="{% url 'users:info' %}">个人资料</a></li>
-            <li ><a href="{% url 'users:mycourse' %}">我的课程</a></li>
-            <li ><a href="{% url 'users:myfav_org' %}">我的收藏</a></li>
-            <li >
-                <a href="usercenter-message.html" style="position: relative;">
-                    我的消息
-                </a>
-            </li>
+            <li {% if request.path|slice:"11" == '/users/info' %}class="active2"{% endif %}><a href="{% url 'users:info' %}">个人资料</a></li>
+            <li {% if request.path|slice:"15" == '/users/mycourse' %}class="active2"{% endif %}><a href="{% url 'users:mycourse' %}">我的课程</a></li>
+            <li {% if request.path|slice:"12" == '/users/myfav' %}class="active2"{% endif %}><a href="{% url 'users:myfav_org' %}">我的收藏</a></li>
+            <li {% if request.path|slice:"16" == '/users/mymessage' %}class="active2"{% endif %}><a href="{% url 'users:mymessage' %}" style="position: relative;">我的消息</a></li>
         </ul>
 	</div>
 
