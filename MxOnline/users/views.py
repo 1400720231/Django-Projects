@@ -10,8 +10,9 @@ from django.contrib.auth.hashers import make_password
 from utils.send_email import send_register_email
 from utils.mini_utils import LoginRequireMixin
 import json
-
-
+from operation.models import UserCourse, UserFavorite
+from organization.models import CourseOrg, Teacher
+from courses.models import Course
 # 登陆视图 ModelBackend这个参数很重要！！！！！！！！记得回来复习
 class CustomBackend(ModelBackend):
     # 自定义authenticate方法满足需求
@@ -33,7 +34,7 @@ class ActiveUserView(View):
             for record in all_records:
                 email = record.email  # 获得email
                 user = UserProfile.objects.get(email=email)  # 获得user信息
-                user.is_active=True  # 是否激活改成True
+                user.is_active = True  # 是否激活改成True
                 user.save()  # 保存到数据库
         return render(request, "login.html")
 
@@ -148,6 +149,8 @@ class UserInfoView(LoginRequireMixin, View):
     def get(self, request):
         return render(request, 'usercenter-info.html')
 
+    """
+    # 方法1 强行赋值save()
     def post(self, request):  # instance是一个已经存在的对象
         user_info_form = UserInfoForm(request.POST)
         if user_info_form.is_valid():
@@ -163,21 +166,24 @@ class UserInfoView(LoginRequireMixin, View):
             return HttpResponse('{"status":"success"}', content_type='application/json')
         else:
             return HttpResponse(json.dumps(user_info_form.errors), content_type='application/json')
-    # def post(self, request):  # instance是一个已经存在的对象
-    #     user_info_form = UserInfoForm(request.POST, instance=request.user)
-    #     if user_info_form.is_valid():
-    #         user_info_form.save()
-    #         return HttpResponse('{"status":"success"}', content_type='application/json')
-    #     else:
-    #         return HttpResponse(json.dumps(user_info_form.errors), content_type='application/json')
+    """
+    # 方法2: 利用modelForm特性，instance=request.user save()
+    def post(self, request):  # instance是一个已经存在的对象
+        user_info_form = UserInfoForm(request.POST, instance=request.user)
+        if user_info_form.is_valid():
+            user_info_form.save()
+            return HttpResponse('{"status":"success"}', content_type='application/json')
+        else:
+            return HttpResponse(json.dumps(user_info_form.errors), content_type='application/json')
 
 
 class UploadImageView(LoginRequireMixin, View):
     """
     用户头像修改
     上传文件用post方法
-    知识点：admin或者xadmin用form字段未filefield的的时候可以都用户上传的头像做保存，利用这一点来修改头像文件
+    知识点：admin或者xadmin用form字段为filefield的的时候可以都用户上传的头像做保存，利用这一点来修改头像文件
 """
+
     # 方法１：
     def post(self, request):
         # 文件类型，和input传入的值保存在不一样的地方，文件类型在request.FILES里面
@@ -186,20 +192,21 @@ class UploadImageView(LoginRequireMixin, View):
             image = image_form.cleaned_data['image']  # clean_data是is_valid()通过后的键值对，以此来获取image
             request.user.image = image  # 给user.image赋值
             request.user.save()  # request.user保存,如果是instance的话就是image_form.save()
+
 """
-    # 方法２（按道理这样是可以的，可是好像保存不到数据库。。。）
+    # 方法２（按道理这样是可以的，可是好像保存不到数据库。。。关键是我修改其他信息的时候也是用的instance方法是可以保存到数据库的，真是日了狗。。）
     def post(self, request):
-        # 文件类型，和input类型传入的值保存在不一样的地方，input在request.POST里面，文件类型在request.FILES里面
-        
-        form.ModelForm中独有的instance参数，意思是：例子,实质是一个你将要修改的实例的对象，这里是request.user对象，
-        save()后会直接替换掉原来user.image，因为UploadImageForm中的fields = ['image']
+        # 文件类型，和input类型传入的值保存在不一样的地方，input传入的值在request.POST里面，文件类型的传值在request.FILES里面
+        #
+        # form.ModelForm中独有的instance参数，意思是：例子,实质是一个你将要修改的实例的对象，这里是request.user对象，
+        # save()后会直接替换掉原来user.image，因为UploadImageForm中的fields = ['image']
         
         image_form = UploadImageForm(request.POST, request.FILES, instance=request.user)
         if image_form.is_valid():
             image_form.save()
-            return HttpResponse('successful  !!')
+            return HttpResponse('{"status":"success"}', content_type='application/json')
         else:
-            return HttpResponse('fail to modify image  !!')
+            return HttpResponse('{"status":"fail"}', content_type='application/json')
 """
 
 
@@ -259,3 +266,66 @@ class UpdateEmailView(View):
             return HttpResponseRedirect(reverse('users:update_email'))
         else:
             return HttpResponse('{"email": "验证码出错"}', content_type='application/json')
+
+
+class MyCourseView(LoginRequireMixin, View):
+    """
+    我的课程
+    """
+    def get(self, request):
+        user_courses = UserCourse.objects.filter(user=request.user)
+        context = {
+            'user_courses': user_courses
+        }
+        return render(request, 'usercenter-mycourse.html', context=context)
+
+
+class MyFavOrgView(LoginRequireMixin, View):
+    """
+    我收藏的课程机构
+    """
+    def get(self, request):
+        org_list = []
+        fav_orgs = UserFavorite.objects.filter(user=request.user, fav_type=2)
+        for fav_org in fav_orgs:
+            org_id = fav_org.fav_id           # 获取收藏机构的id
+            org = CourseOrg.objects.get(id=org_id)  # 获取某个机构对象
+            org_list.append(org)  # 追加进去
+        context = {
+            'org_list': org_list
+        }
+        return render(request, 'usercenter-fav-org.html', context=context)
+
+
+class MyFavTeacherView(LoginRequireMixin, View):
+    """
+    我收藏的授课教师
+    """
+    def get(self, request):
+        teacher_list = []
+        fav_teachers = UserFavorite.objects.filter(user=request.user, fav_type=3)
+        for fav_teacher in fav_teachers:  # 获取收藏教师的id
+            teacher_id = fav_teacher.fav_id
+            teacher = Teacher.objects.get(id=teacher_id)  # 获取单独的teacher对象
+            teacher_list.append(teacher)   # 追加进去
+        context = {
+            'teacher_list': teacher_list
+        }
+        return render(request, 'usercenter-fav-teacher.html', context=context)
+
+
+class MyFavCourseView(LoginRequireMixin, View):
+    """
+    我收藏的课程
+    """
+    def get(self, request):
+        course_list = []
+        fav_courses = UserFavorite.objects.filter(user=request.user, fav_type=1)
+        for fav_course in fav_courses:  # 获取收藏教课程的id
+            course_id = fav_course.fav_id
+            course = Course.objects.get(id=course_id)  # 获取单独的course对象
+            course_list.append(course)   # 追加进去
+        context = {
+            'course_list': course_list
+        }
+        return render(request, 'usercenter-fav-course.html', context=context)

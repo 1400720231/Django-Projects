@@ -49,3 +49,4 @@ class UserInfoForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         fields = ['nick_name', 'gender', 'birth', 'address', 'mobile']
+

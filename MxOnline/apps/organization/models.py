@@ -61,3 +61,13 @@ class Teacher(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_course_nums(self):
+        return self.course_set.all().count()
+
+"""
+    因为course中有一个外键指向了Teacher  teacher = models.ForeignKey(Teacher)
+     course_set.all()表示获取所有指向此实例的course的 Query_set对象 
+类似于course.objects.all()       
+        
+"""
