@@ -25,9 +25,9 @@ sys.path.insert(0, os.path.join(BASE_DIR, 'extra_apps'))  # 加入根搜索路�
 SECRET_KEY = 'g4!zj-5v5_k7#e1t2m!c353!2_g2!6xylrjr^#3godasn($*8t'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']  # DEBUG = False的时候必须设置ALLOWED_HOSTS参数， '*'表示所有客户端都可以访问
 
 
 # Application definition
@@ -136,9 +136,19 @@ USE_TZ = False  # True表示国际UTC时间，False表示本地时间
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
-STATIC_URL = '/static/'  # 这个名字可以随便取
+STATIC_URL = '/static/'
+"""
+这个名字可以随便取也不可以随便去, 
+1> 可以随便取的时候  在html文件开头引用： {% load staticfiles %}
+在开头引用这句话， 用的时候： src="{% static 'image/666.png' %}"
+这里的static指取寻找STATICFILES_DIRS目录下的 image/666.png文件，所以你可以看到，与根目录地址(/static/)无关
+2> 不能随便取名的时候 src="{{STATIC_URL}}image/666.png"
+这样写的意思是我按照硬编码的形式来找静态文件： /static/image/666.png，万一你随便取了个
+STATIC_URL = '/static6666/'就表示src="/static6666/image/666.png"，但是所有文件存在/static/目录下，
+然而没有/static6666/这个路径，所以根本找不到路径!!(除非你把保存静态文件夹的名字也改成：static6666，那我就不说欧化了)
+"""
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, "static"),
+    os.path.join(BASE_DIR, "static"),  # 静态文件保存在那些文件夹下面
 )
 
 # 邮箱配置
@@ -150,5 +160,12 @@ EMAIL_USE_TLS = True # 与SMTP服务器通信时，是否启动TLS链接(安全�
 EMAIL_FROM = '1400720231_mina@sina.com'  # 发送者，一般和EMAIL_HOST_USER保持一直，不然会报错
 
 
-MEDIA_URL = '/media/'  # 类似于static的url，名字也是可以随便取的
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # media_root只能设置一个，不然她不知道到底存放再哪里
+MEDIA_URL = '/media/'  # 不能随便取 因为用的时候src="{{MEDIA_URL}}/image/..."表示按照这个路径找
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+"""
+MEDIA_ROOT只能设置一个，不然她不知道到底存放再哪里，和static不同，static是准备取出来用的，可以到设置的目录里找就行了，
+但是MEDIA_ROOT是为了保存上传文件的地方，你要是设置多个，他不晓得存在什么地方。可以，没毛病！
+"""
+# DEBUG=False的时候， 记配置static文件的STATIC_ROOT， 然后再url中serve一下
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+

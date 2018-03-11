@@ -99,7 +99,9 @@ class LoginView(View):
             if user is not None:
                 if user.is_active:  # 是否激活，激活才让登录
                     login(request, user)
-                    return render(request, "index.html")
+                    # 如果这里用render的话 意思就是把此时view中的数据render到index.html页面，
+                    # 会导致看不到其他view在index.html render的数据，所以我们直接重定向过去就可以了，不用render传信息
+                    return HttpResponseRedirect(reverse('index'))
                 else:
                     return render(request, "login.html", {'mes': '用户未激活'})
         else:
@@ -373,8 +375,9 @@ class IndexView(View):
     index首页功能视图函数
     """
     def get(self, request):
+        # 500页面功能测试 ： print(1/0)
         all_banners = Banner.objects.all().order_by('index')  # 排序一下
-        courses = Course.objects.filter(is_banner=False)[:5]  # 非banner course
+        courses = Course.objects.filter(is_banner=False)[:6]  # 非banner course
         banner_courses = Course.objects.filter(is_banner=True)[:3]  # banner  course
         course_orgs = CourseOrg.objects.all()[:15]  # 取15个
         context = {
@@ -388,3 +391,25 @@ class IndexView(View):
 
         }
         return render(request, 'index.html', context)
+
+
+def page_not_found(request):
+    """
+    全局404处理函数, 404 表示NOT FOUND，访问不存在的地址的时候的状态
+
+    """
+    from django.shortcuts import render_to_response
+    response = render_to_response('404.html')
+    response.status_code = 404
+    return response
+
+
+def page_error(request):
+    """
+    全局500处理函数， 500表示error，一般是view函数错误的时候
+
+    """
+    from django.shortcuts import render_to_response
+    response = render_to_response('500.html')
+    response.status_code = 500
+    return response

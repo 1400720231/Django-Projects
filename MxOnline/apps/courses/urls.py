@@ -16,3 +16,5 @@ urlpatterns =[
     url(r'^video/(?P<video_id>\d+)/$', VideoPlayView.as_view(), name='video_play'),
 
 ]
+
+
