@@ -20,8 +20,8 @@
 				<ul class="fl tab_header">
 					<li class="{% ifequal sort '' %}active{% endifequal %}"><a href="?sort=">全部</a> </li>
 					<li class="{% ifequal sort 'hot' %}active{% endifequal %}"><a href="?sort=hot">人气 &#8595;</a></li>
-				</ul>
-                <div class="fr butler-num">共<span class="key">9</span>人&nbsp;&nbsp;&nbsp;</div>
+				</ul>                                            <!-所有教师的数量-->
+                <div class="fr butler-num">共<span class="key">{{ all_teacher_nums}}</span>人&nbsp;&nbsp;&nbsp;</div>
 			</div>
             {% for teacher in all_teachers.object_list %}
                 <dl class="des">

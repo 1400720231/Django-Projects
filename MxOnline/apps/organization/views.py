@@ -36,6 +36,7 @@ class OrgView(View):
             # CourseOrg中city字段是个CityDict对象(因为是外键)，但是在数据库中是以city_id字段保存，因为CourseOrg中的默认主键是id
         # 类别筛选
         category = request.GET.get('ct', "")
+        # if True才会筛选 不然是无效的
         if category:
             all_orgs = all_orgs.filter(category=category)
         sort = request.GET.get('sort', "")
@@ -85,6 +86,8 @@ class OrgHomeView(View):
     def get(self, request, org_id):
         current_page = 'home'
         course_org = CourseOrg.objects.get(id=int(org_id))
+        course_org.click_num += 1
+        course_org.save()
         # course_set表示反向取外键的值,也是queryset对象
         has_fav = False  # 判断是否收藏
         if request.user.is_authenticated:
@@ -222,24 +225,26 @@ class TeacherListView(View):
         if search_keywords:  # Q函数相当于or 的意思 要么name以keywors开头，要么desc 以keywords开头
             all_teachers = all_teachers.filter(
                 Q(name__icontains=search_keywords) |
-                Q( work_company__icontains=search_keywords)|
+                Q(work_company__icontains=search_keywords)|
                 Q(work_position__icontains=search_keywords))
 
         if sort:
             if sort == 'students':
                 all_teachers = all_teachers.order_by("-click_num")
         sorted_teacher = Teacher.objects.all().order_by("-click_num")[:3]
+        all_teacher_nums = all_teachers.count()
 
         try:
             page = request.GET.get('page', 1)  # 这个page字段是安装库后自己有的，不用管
         except PageNotAnInteger:
             page = 1
-        p = Paginator(all_teachers, 1, request=request)  # 教程文档中没有3这个参数，其实个参数在源码中是per_page,这个参数表示每页显示几个的意思
+        p = Paginator(all_teachers, 3, request=request)  # 教程文档中没有3这个参数，其实个参数在源码中是per_page,这个参数表示每页显示几个的意思
         teachers = p.page(page)
         context = {
             'all_teachers': teachers,
-            'sorted_teacher':sorted_teacher,
-            'sort': sort
+            'sorted_teacher': sorted_teacher,
+            'sort': sort,
+            'all_teacher_nums': all_teacher_nums
 
         }
         return render(request, 'teachers-list.html', context)
@@ -252,6 +257,8 @@ class TeacherDetailView(View):
     def get(self, request, teacher_id):
         # 讲师
         teacher = Teacher.objects.get(id=int(teacher_id))
+        teacher.click_num += 1
+        teacher.save()
         # 讲师的课程。通过course表filter出来
         all_courses = Course.objects.filter(teacher=teacher)
         # 热门讲师通过点击数来order_by

@@ -83,7 +83,7 @@ class CourseDetailView(View):
 
     def get(self, request, course_id):
         course = Course.objects.get(id=int(course_id))
-        course.click_num += 1
+        course.click_num += 1  # 点击数加1
         course.save()
         tag = course.tag
         if tag:
@@ -99,11 +99,13 @@ class CourseDetailView(View):
 
 class CourseInfoView(LoginRequireMixin, View):  # 装饰器在点击我要学习的时候会跳入登录页面
     """
-    课程章节信息
+    课程章节信息，通过点击我要学习 点击进来
     """
 
     def get(self, request, course_id):
         course = Course.objects.get(id=int(course_id))
+        course.students += 1  # 访问此链接，学习人数加1
+        course.save()
         # 查询是否已经关联该课程，就是看usercourse表里面有没有
         user_courses = UserCourse.objects.filter(user=request.user, course=course)
         # 为空则没有关联， 强行关联save()一下
