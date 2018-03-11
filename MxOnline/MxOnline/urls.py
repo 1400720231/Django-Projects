@@ -20,12 +20,13 @@ from django.views.generic import TemplateView  # 专门处理静态文件的View
 from django.views.static import serve  # 处理静态文件的
 
 from users.views import LoginView, RegisterView, ActiveUserView, ForgetPwdViws, ResetView, ModifyPwdView, LogoutView
+from users.views import IndexView
 from organization.views import OrgView
 from MxOnline.settings import MEDIA_ROOT
 
 urlpatterns = [
     url(r'^xadmin/', xadmin.site.urls),
-    url(r'^$', TemplateView.as_view(template_name="index.html"), name='index'),
+    url(r'^$', IndexView.as_view(), name='index'),
     url(r'^logout/$', LogoutView, name='logout'),
     url(r'^login/$', LoginView.as_view(), name='login'),
     url(r'^register/$', RegisterView.as_view(), name='register'),

@@ -26,7 +26,8 @@ class UserProfile(AbstractUser):
         所以放在这里，当条用unread_nums()函数的时候在调用一次
         """
         from operation.models import UserMessage
-        return UserMessage.objects.filter(user=self.id).count()
+        # 返回自己的消息 且未读的 has_read = False
+        return UserMessage.objects.filter(user=self.id, has_read=False).count()
 
 
 class EmailVerifyRecord(models.Model):
@@ -53,5 +54,8 @@ class Banner(models.Model):
     class Meta:
         verbose_name = "轮播图"
         verbose_name_plural =verbose_name
+
+    def __str__(self):
+        return '轮播图--'+self.title
 
 

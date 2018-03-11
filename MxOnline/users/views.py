@@ -14,6 +14,7 @@ import json
 from operation.models import UserCourse, UserFavorite, UserMessage
 from organization.models import CourseOrg, Teacher
 from courses.models import Course
+from .models import Banner  # 轮播图
 
 
 # 登陆视图 ModelBackend这个参数很重要！！！！！！！！记得回来复习
@@ -346,6 +347,11 @@ class MymessageView(LoginRequireMixin, View):
     """
     def get(self, request):
         all_messages = UserMessage.objects.filter(user=request.user.id)
+        all_unread_messages = UserMessage.objects.filter(user=request.user.id, has_read=False)
+        # 把未读消息全部转换成已读
+        for all_unread_message in all_unread_messages:
+            all_unread_message.has_read = True
+            all_unread_message.save()
 
         # 对机构分页,这里是第三方库pagenation的内置格式，只是换了一下数据字段
         try:
@@ -360,3 +366,25 @@ class MymessageView(LoginRequireMixin, View):
 
         }
         return render(request, 'usercenter-message.html', context)
+
+
+class IndexView(View):
+    """
+    index首页功能视图函数
+    """
+    def get(self, request):
+        all_banners = Banner.objects.all().order_by('index')  # 排序一下
+        courses = Course.objects.filter(is_banner=False)[:5]  # 非banner course
+        banner_courses = Course.objects.filter(is_banner=True)[:3]  # banner  course
+        course_orgs = CourseOrg.objects.all()[:15]  # 取15个
+        context = {
+            'all_banners': all_banners,
+            'courses': courses,
+            'banner_courses': banner_courses,
+            'course_orgs': course_orgs
+
+
+
+
+        }
+        return render(request, 'index.html', context)
