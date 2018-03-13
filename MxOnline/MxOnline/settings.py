@@ -25,7 +25,7 @@ sys.path.insert(0, os.path.join(BASE_DIR, 'extra_apps'))  # 加入根搜索路�
 SECRET_KEY = 'g4!zj-5v5_k7#e1t2m!c353!2_g2!6xylrjr^#3godasn($*8t'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']  # DEBUG = False的时候必须设置ALLOWED_HOSTS参数， '*'表示所有客户端都可以访问
 
@@ -167,5 +167,5 @@ MEDIA_ROOT只能设置一个，不然她不知道到底存放再哪里，和stat
 但是MEDIA_ROOT是为了保存上传文件的地方，你要是设置多个，他不晓得存在什么地方。可以，没毛病！
 """
 # DEBUG=False的时候， 记配置static文件的STATIC_ROOT， 然后再url中serve一下
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 

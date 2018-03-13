@@ -19,7 +19,10 @@ from xadmin.sites import site
 from xadmin.util import unquote
 from xadmin.views import BaseAdminPlugin, ModelFormAdminView, ModelAdminView, CommAdminView, csrf_protect_m
 
+
+# 再早一点的版本里面是没有这行代码的，需要自行设置
 User = get_user_model()
+
 
 ACTION_NAME = {
     'add': _('Can add %s'),
@@ -263,6 +266,7 @@ class ChangeAccountPasswordView(ChangePasswordView):
 
 
 user_model = settings.AUTH_USER_MODEL.lower().replace('.','/')
+#早一点的版本里面这个是写死的，现在学乖了啊　知道用动态数据写ｘａｄｍｉｎ后台更改密码的ｕｒｌ路径
 site.register_view(r'^%s/(.+)/password/$' % user_model,
                    ChangePasswordView, name='user_change_password')
 site.register_view(r'^account/password/$', ChangeAccountPasswordView,

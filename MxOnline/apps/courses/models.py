@@ -35,13 +35,41 @@ class Course(models.Model):
         # 获取章节课程数
         # 因为lesson外键指向了Course，所以用lesson_set反向获取所有的lesson(章节数)
         return self.lesson_set.all().count()
+    # 函数的别名
+    get_zj_nums.short_description = "章节数"
+
+    def go_to(self):
+        from django.utils.safestring import mark_safe
+        return mark_safe("<a href='http://www.baidu.com'>跳转到百度<a/>")
+    go_to.short_description = "链接"
 
     def get_learn_users(self):
         # 获取学习了该课程的用户
         return self.usercourse_set.all()[:5]  # 取5个
 
+
+
     def __str__(self):
         return self.name
+
+
+class BannerCourse(Course):
+    class Meta:
+        verbose_name = "轮播课程"
+        verbose_name_plural = verbose_name
+        proxy = True
+"""
+proxy这个参数很重要！！！！！ BannerCourse这个model表的作用是把Course完全复制一遍，
+但是为了数据库中始终不生成新的表BannerCourse，proxy=True就发挥了关键作用！！！
+意思是只是引用Course一下，但是生成新表BannerCourse
+"""
+
+
+
+
+
+
+
 
 
 class Lesson(models.Model):

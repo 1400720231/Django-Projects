@@ -21,7 +21,8 @@ from django.views.static import serve  # 处理静态文件的
 
 from users.views import LoginView, RegisterView, ActiveUserView, ForgetPwdViws, ResetView, ModifyPwdView, LogoutView
 from users.views import IndexView
-from MxOnline.settings import MEDIA_ROOT, STATIC_ROOT
+from MxOnline.settings import MEDIA_ROOT
+# STATIC_ROOT
 
 urlpatterns = [
     url(r'^xadmin/', xadmin.site.urls),
@@ -41,7 +42,7 @@ urlpatterns = [
     # 配置上传访问文件
     url(r'^media/(?P<path>.*)/$', serve, {'document_root': MEDIA_ROOT}),
     # debug=false 时配置static文件 访问地址
-    url(r'^static/(?P<path>.*)/$', serve, {'document_root': STATIC_ROOT}),
+    # url(r'^static/(?P<path>.*)/$', serve, {'document_root': STATIC_ROOT}),
     # user.views
     url(r'^users/', include('users.urls', namespace='users'))
 ]
