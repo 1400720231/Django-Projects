@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<form method="post" action="{% url 'account:user_login' %}">
+	{% csrf_token %}
+	{{　form.as_p　}}
+	<button>提交</button>
+</form>
+</body>
+</html>
