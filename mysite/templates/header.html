@@ -7,7 +7,14 @@
 				<li><a href="{% url 'blog:blog_title' %}">BLOG</a></li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
-				<li><a href="{% url 'account:user_login' %}">LOGIN</a></li>
+
+			{% if user.is_authenticated %}
+			<li><a href="#">{{ user.username }}</a></li>
+			<li><a href="{% url 'account:user_logout' %}">Login out</a></li>
+			{%else  %}
+				<li><a href="{% url 'account:user_login' %}">Login</a></li>
+			{% endif %}
+			
 			</ul>
 		</div>
 	</nav>
