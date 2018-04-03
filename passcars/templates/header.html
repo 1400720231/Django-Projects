@@ -1,0 +1,26 @@
+{% load staticfiles %}
+<div class="container-fluid">
+	<nav class="navbar navbar-default" role="navigation">
+		<div>
+			<ul class="nav navbar-nav" role="navigation">
+			<li style="margin-left:10px"><a href="{% url 'index' %}">智能停车系统</a></li>
+			</ul>
+			<ul class="nav navbar-nav navbar-right">
+
+			{% if user.is_authenticated %}
+			<li><a href="{% url 'users:user_info' %}">{{ user.username }}</a></li>
+			<li><a href="{% url 'users:order_list' %}">用户消费中心</a></li>
+			<li><a href="{% url 'users:on_position' %}">去取消订单</a></li>
+			<li style="margin-right:30px"><a href="{% url 'users:logout' %}">Login out</a></li>
+			{%else  %}
+				<li><a href="{% url 'users:login' %}">Login</a></li>
+				<li style="margin-right:30px"><a href="{% url 'users:register' %}">Register</a></li>
+			{% endif %}
+			
+			</ul>
+		</div>
+	</nav>
+{% block page %}
+
+{% endblock %}
+</div>

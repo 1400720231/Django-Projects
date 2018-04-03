@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block titles %}个人中心{% endblock %}
+
+{% block page %}
+<div class="container-fluid">
+	<div class="row">
+	<div class="col-md-3">
+		<div class="span6">
+			<ul class="breadcrumb">
+				<li>
+					<a href="{% url 'index' %}">主页</a> <span class="divider">></span>
+				</li>
+				<li>
+					<a href="{% url 'users:user_info' %}">个人中心</a> <span class="divider">></span>
+				</li>
+				<li class="active">个人信息</li>
+			</ul>
+		</div>
+	</div>
+	</div>
+</div>
+{% endblock %}
+{% block content %}  
+<div class="container" style="height:200px">
+	<div class="page-header text-center">
+		<p class="h1">个人用户信息展示页面</p>
+	</div>
+</div>
+<div class="container-fluid">
+	
+	<div class="row">
+		<div class="col-md-3 text-center">
+			
+			<div class="#">
+				<p class="h2  " style="margin-bottom:50px height:'50px'"> 个人信息</p>
+				<p class="h2 " style="margin-bottom:50px height:'50px'"> 以往订单</p>
+				<p class="h2 " style="margin-bottom:50px height:'50px'">取消订单</p>
+				<p class="h2 " style="margin-bottom:50px height:'50px'"> 消息中心</p>
+			</div>
+	
+		</div>
+		<div class="col-md-6">
+			<div class="">
+			
+				<form method="post" action="{% url 'users:user_info' %}">
+					{% csrf_token %}
+					<div class="row text-center">
+						<div class="col-md-6">
+							<h3>
+									<label for="{{info.username.id_for_label }}" class="col-md-5 control-label"><span></span>Username</label>
+							</h3>
+						
+							<p class="col-md-6 text-left"> {{ info.username }} </p>
+						</div>
+					</div>
+					<div class="row text-center">
+						<div class="col-md-6">
+							<h3>
+							<label for="{{info.mobile.id_for_label }}" class="col-md-5 control-label"
+							><span ></span>Mobile</label>
+							</h3>
+							<p class="col-md-6 text-left">  {{ info.mobile }} </p>
+						</div>
+					</div>
+					
+					<div class="row text-center">
+						<div class="col-md-6">
+							<h3>
+							<label for="{{info.nickname.id_for_label }}" class="col-md-5 control-label"
+							><span ></span>Nick_Name</label>
+							</h3>
+							<p class="col-md-6 text-left">  {{ info.nick_name  }} </p>
+						</div>
+					</div>
+					<div class="row text-center">
+						<div class="col-md-6">
+							<h3>
+							<label for="{{info.gender.id_for_label }}" class="col-md-5 control-label"
+							><span ></span>Gender</label>
+							</h3>
+							<p class="col-md-6 text-left"> {{ info.gender }}</p>
+						</div>
+					</div>		
+					<div class="row text-center">
+						<div class="col-md-6">
+							<h3>
+							<label for="{{info.address.id_for_label }}" class="col-md-5 control-label"
+							><span ></span>Addressr</label>
+							</h3>
+							<p class="col-md-6 text-left"> {{ info.address }}</p>
+						</div>
+					</div>	
+
+					<div class="row text-center" >
+						<div class="col-md-6 "><input type="submit" class="btn btn-primary btn-lg"  value="修改"></div>
+					</div>
+					
+				</form>
+	    	</div>
+	
+		</div>
+		
+		<div class="col-md-3 ">
+				<div  style="margin-top:20px">
+					<img width="200" height="200"  src="{{ MEDIA_URL }}{{ request.user.image }}"> 
+				</div>		
+				<div class="row " style="margin-top:20px">
+						<div class="col-md-12 "><input type="submit" class="btn btn-primary btn-lg"  value="修改头像"></div>
+					</div>
+		</div>
+			
+	</div>
+</div>
+<!--label for 标签的意义在于，你点击Username字段的时候它直接跳进input的输入框内，仅仅只是方便操作而已-->
+{% endblock %}

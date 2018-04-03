@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+{% load staticfiles  %}
+<!--注意我的css等路径前面有个lib因为我把bootstrap下面的css js jquery都放在lib这个文件夹里面了-->
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">  <!--告诉IE浏览器用最新的浏览器渲染这个页面-->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!--
+	width=device-width, initial-scale=1.0 是bootstrap默认的初始值,下面三个是可选的
+	user-scalable=no :用户能否在移动端能否缩放页面，默认no
+	maxinum-scale=1.0, mininum-scale=1.0　设置了页面最大和最小的缩放的级别
+	-->
+	<!--css 插件-->
+    <link rel="stylesheet" href="{% static "css/bootstrap.min.css" %} ">
+    {% block css %}{% endblock %}
+    <!--自定义css-->
+    {# <link rel="stylesheet" type="text/css" href="css/style.css"> #}
+	<title>{% block titles %}{% endblock %}</title>
+</head>
+<body>
+
+
+{% include "header.html" %}
+{% block page %}
+
+{% endblock %}
+{% block content %} 
+	
+
+
+
+	<div    class="container">
+		<div id="myCarousel" class="carousel slide">
+	<!-- 轮播（Carousel）指标 -->
+	<ol class="carousel-indicators">
+		<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+		<li data-target="#myCarousel" data-slide-to="1"></li>
+		<li data-target="#myCarousel" data-slide-to="2"></li>
+	</ol>   
+	<!-- 轮播（Carousel）项目 -->
+	<div class="carousel-inner">
+		<div  class="item active">
+			<img src="{% static "images/5.jpeg" %}" alt="First slide">
+		</div>
+		<div class="item">
+			<img src="{% static "images/5.jpeg"" %}" alt="Second slide">
+		</div>
+		<div class="item">
+			<img src="{% static "images/5.jpeg"" %}" alt="Third slide">
+		</div>
+	</div>
+	<!-- 轮播（Carousel）导航 -->
+	<a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+		<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+		<span class="sr-only">Previous</span>
+	</a>
+	<a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+		<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+		<span class="sr-only">Next</span>
+	</a>
+	</div> 
+<div style="height:25px"  class="container"></div>
+<div class="container">
+			<div class="container">
+				<div class="text-center">
+					欢迎来到智能停车系统，<span class="btn btn-default">
+					<a href="{% url 'positions:all_positions' %}">立即选车位停车</a> >> </span>
+				</div>
+
+			</div>
+	</div>
+
+
+
+
+{% endblock %}
+	
+
+
+
+
+{% include "footer.html" %}
+
+
+
+
+
+
+<!--js　and jquery 插件　　记得放在最下面！！-->
+{% block javascript %} {% endblock %}
+<script src="{% static "jquery/jquery-3.3.1.min.js" %} "></script>
+<script src="{% static "js/bootstrap.min.js" %}  "></script>
+</body>
+</html>

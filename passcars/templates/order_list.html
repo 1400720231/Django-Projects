@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block titles %}个人中心{% endblock %}
+{% block page %}
+<div class="container-fluid">
+	<div class="row">
+	<div class="col-md-3">
+		<div class="span6">
+			<ul class="breadcrumb">
+				<li>
+					<a href="{% url 'index' %}">主页</a> <span class="divider">></span>
+				</li>
+				<li>
+					<a href="{% url 'users:user_info' %}">个人中心</a> <span class="divider">></span>
+				</li>
+				<li class="active">订单详情页</li>
+			</ul>
+		</div>
+	</div>
+	</div>
+</div>
+{% endblock %}
+{% block content %}  
+<div class="container" style="height:200px">
+	<div class="page-header text-center">
+		<p class="h1">用户订单消费表格</p>
+	</div>
+</div>
+<div class="container-fluid">
+	
+	<div class="row">
+		<div class="col-md-3 text-center">
+			
+			<div class="#">
+				<p class="h2 " style="margin-bottom:50px height:'50px'">个人信息</p>
+				<p class="h2 " style="margin-bottom:50px height:'50px'">以往订单</p>
+				<p class="h2 " style="margin-bottom:50px height:'50px'">取消订单</p>
+				<p class="h2 " style="margin-bottom:50px height:'50px'">消息中心</p>
+			</div>
+		</div>
+		<div class="col-md-6">
+
+			<div >
+				<table class="table table-striped">
+				    <thead>
+					    <tr>
+					        <th>时间(预定/取车)</th>
+					        <th>操作(停车/取车)</th>
+					        <th>车位</th>
+					        <th>消费金额</th>
+					    </tr>
+				    </thead>
+				    <tbody>
+					    {% for user_log in user_logs %}
+						    <tr>
+						        <td>{{ user_log.time|date:'Y-n-d H:i ' }}</td>
+						        <td>{% if user_log.stop_pick == '1' %}预定{% else %}取车{% endif %} </td>
+						        <td>{{ user_log.car_position.position_name }}}</td>
+						        <td>10块</td>
+						    </tr>
+						{% endfor %}
+				    </tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+		
+	
+	
+	
+</div>
+<!--label for 标签的意义在于，你点击Username字段的时候它直接跳进input的输入框内，仅仅只是方便操作而已-->
+{% endblock %}
