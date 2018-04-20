@@ -60,14 +60,22 @@
 					
 				</div>
 				<div class="col-md-9" style="margin-bottom:10px; height:200px" >
-					<p><strong ><a style="color:green" href="{{ article.url }}">{{ article.title }}</a></strong>   &nbsp<strong>发表时间:{{ article.create_date }}　{{ article.tags }}　点赞:{{ article.praise_nums }}　评论:{{ article.comment_nums }}</strong> </p>
+					<p><strong ><a style="color:green;font-size:20px;" href="{{ article.url }}">{{ article.title }}</a></strong>   &nbsp<strong>发表时间:{{ article.create_date }}　{{ article.tags }}　点赞:{{ article.praise_nums }}　评论:{{ article.comment_nums }}</strong> </p>
 				
-					{% autoescape off %}{{ article.content|striptags|truncatechars:400 }} {% endautoescape %}
+					{% autoescape off %}{{ article.content|striptags|truncatechars:300 }} {% endautoescape %}
 				</div>
 			{% endfor %}
 		</div>
 		
-		<div class="col-md-3">搜索历史</div>
+		<div class="col-md-3">
+			<div class="page-header text-center" ><strong style="color:blue"><a href="#" class="list-group-item active">
+			    历史搜索
+			</a></strong>  </div>
+			{% for history in historys %}
+			<a href="{% url 'search:search_list' %}?keywords={{ history.history }}" class="list-group-item text-center">{{ history.history }}</a>
+			
+			{% endfor %}
+		</div>
 	
 </div>
 

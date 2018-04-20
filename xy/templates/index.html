@@ -33,12 +33,25 @@
 			<button style="height:40px;"  type="submit" class="btn btn-success">搜索一下</button>
 		</form>
     </div>
+
     <div class="col-md-1"></div>
 	
- 
 	</div>
 	
+	<div class="row text-left" style="margin-top:30px;">
+			<div class="col-md-3"></div>
+    		<div class="col-md-6"><strong >热门搜索:&nbsp&nbsp </strong> 
+    		
+    			{% for hot in hots %}
+    			<a href="{% url 'search:search_list' %}?keywords={{ hot.history }}">{{ hot.history }}&nbsp</a>
+    				
+    			{% endfor %}
+    			
 
+    		</div>
+    		<div class="col-md-3"></div>
+	</div>
+ 
 </div>
 
 
