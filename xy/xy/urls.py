@@ -20,5 +20,5 @@ from django.views.generic import TemplateView
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', TemplateView.as_view(template_name="index.html"), name="index"),
-    url(r'^search/',include('search.urls',namespace='searach')),
+    url(r'^search/',include('search.urls',namespace='search')),
 ]
