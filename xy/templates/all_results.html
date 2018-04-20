@@ -19,6 +19,7 @@
     
     <div>
         <ul class="nav navbar-nav">
+        	<li><a href="?all=all">全部</a></li>
             <li><a href="?sort=praise_nums">点赞数</a></li>
             <li><a href="?comment_nums=comment_nums">评论数</a></li>
             <li><a href="?time=time">时间排序</a></li>
@@ -39,7 +40,7 @@
 				
 			</div>
 			<div class="col-md-9" style="margin-bottom:10px; height:200px" >
-				<p><strong style="color:green">{{ article.title }}</strong> &nbsp<strong>发表时间:{{ article.create_date }}　{{ article.tags }}　点赞:{{ article.praise_nums }}　评论:{{ article.comment_nums }}</strong> </p>
+				<p><strong ><a style="color:green" href="{{ article.url }}">{{ article.title }}</a> </strong> &nbsp<strong>发表时间:{{ article.create_date }}　{{ article.tags }}　点赞:{{ article.praise_nums }}　评论:{{ article.comment_nums }}</strong> </p>
 			
 				{% autoescape off %}{{ article.content|striptags|truncatechars:400 }} {% endautoescape %}
 			</div>

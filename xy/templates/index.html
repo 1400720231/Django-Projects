@@ -7,7 +7,7 @@
 	<div class="row"></div>
 	<div class="row"></div>
 	<div class="row text-center" >
-		
+<!--		
 	<div class="input-group">
 	<form method="get" action="{% url 'search:search_list' %}">
 	    <input type="" name="keywords">
@@ -15,8 +15,27 @@
 	    <button>搜索一下</button>
 	    {% csrf_token %}
     </form>
-</div>
+-->
+    <div class="col-md-1"></div>
+    <div class="col-md-10">
+    
+    <span><h3 style="color:green">伯乐在线搜索</h3></span>
+    <br>
 		
+		<form class="form-inline" role="form" method="get" action="{% url 'search:search_list' %}">
+			{% csrf_token %}
+			<div class="form-group">
+				<label class="sr-only" for="name">名称</label>
+				<input  style="width:500px;height:40px;" type="text" name="keywords" class="form-control" id="name" 
+					   placeholder="输入查询字段">
+			</div>
+
+			<button style="height:40px;"  type="submit" class="btn btn-success">搜索一下</button>
+		</form>
+    </div>
+    <div class="col-md-1"></div>
+	
+ 
 	</div>
 	
 

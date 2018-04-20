@@ -2,61 +2,73 @@
 {% load staticfiles %}
 {% load i18n %}  <!--分页插件-->
 {% block content %} 
+<!--
+
 <div class="container-fulid">
-	<div class="row" style="margin-left:1px;margin-top:6px">
-		<div class="input-group col-md-3" style="margin-top:0px positon:relative">  
-	       		<input type="text" class="form-control"placeholder="请输入搜索字段" / >  
-	            <span class="input-group-btn">  
-	               <button class="btn btn-info btn-search">搜索一下</button>  
-	                
-	            </span>  
-		</div>  
-	</div>
+
+
+		<form class="form-inline" role="form" method="get" action="{% url 'search:search_list' %}">
+			{% csrf_token %}
+			<div class="form-group">
+				<label class="sr-only" for="name">名称</label>
+				<input  style="width:500px;height:40px;" type="text" name="keywords" class="form-control" id="name" 
+					   placeholder="输入查询字段">
+			</div>
+
+			<button style="height:40px;"  type="submit" class="btn btn-success">搜索一下</button>
+		</form>
+
+
+-->
+<div class="container-fulid">
+	
+		<form class="form-inline" role="form" method="get" action="{% url 'search:search_list' %}">
+			{% csrf_token %}
+			<div class="form-group">
+				<label class="sr-only" for="name">名称</label>
+				<input  style="width:500px;height:40px;" type="text" name="keywords" class="form-control" id="name" value="{{ search_keywords }}" 
+					   placeholder="输入查询字段">
+			</div>
+
+			<button style="height:40px;"  type="submit" class="btn btn-success">搜索一下</button>
+		</form>
 </div>
+
 
 <nav class="navbar navbar-default" role="navigation">
     <div class="container-fluid">
     
     <div>
         <ul class="nav navbar-nav">
-            <li><a href="?sort=praise_nums">点赞数</a></li>
-            <li><a href="?comment_nums=comment_nums">评论数</a></li>
-            <li><a href="?time=time">时间排序</a></li>
+        	<li><a href="?all=all&keywords={{ search_keywords }}">全部</a></li>
+            <li><a href="?sort=praise_nums&keywords={{ search_keywords }}">点赞数</a></li>
+            <li><a href="?comment_nums=comment_nums&keywords={{ search_keywords }}">评论数</a></li>
+            <li><a href="?time=time&keywords={{ search_keywords }}">时间排序</a></li>
             <li><a href="">.....</a></li>
             
         </ul>
     </div>
     </div>
 </nav>
-
 <div class="container">
 	
 	<div class="row">
 		<div class="col-md-9">
-		{% for article in articles.object_list %}
-			<div class="col-md-3" style="height:200px">
-				<img style="width:150px;height:150px"  src="{{ article.front_image_url }}">
+			{% for article in articles.object_list %}
+				<div class="col-md-3" style="height:200px">
+					<img style="width:150px;height:150px"  src="{{ article.front_image_url }}">
+					
+				</div>
+				<div class="col-md-9" style="margin-bottom:10px; height:200px" >
+					<p><strong ><a style="color:green" href="{{ article.url }}">{{ article.title }}</a></strong>   &nbsp<strong>发表时间:{{ article.create_date }}　{{ article.tags }}　点赞:{{ article.praise_nums }}　评论:{{ article.comment_nums }}</strong> </p>
 				
-			</div>
-			<div class="col-md-9" style="margin-bottom:10px; height:200px" >
-				<p><strong style="color:green">{{ article.title }}</strong> &nbsp<strong>发表时间:{{ article.create_date }}　{{ article.tags }}　点赞:{{ article.praise_nums }}　评论:{{ article.comment_nums }}</strong> </p>
-			
-				{% autoescape off %}{{ article.content|striptags|truncatechars:400 }} {% endautoescape %}
-			</div>
-		{% endfor %}
-<!--
-
-<div class="col-md-3">
-				<img style="width:150px;height:150px"  src="{% static "images/1.jpg" %}">
-				
-			</div>
-			<div class="col-md-9" style="margin-bottom:10px">
-			这里是文章这里是文章内容这里是文章内容这里是文章内容这里是文章内容这里是文章内容这里是文章内容这里是文章内容这里是文章内容这里是文章内容这里是文章内容这里是文章内容这里是文章内容这里是文章内容这里是文章内容这里是文章内容这里是文章内容这里是文章内容这里是文章内容这里是文章内容这里是文章内容这里是文章内容这里是文章内容这里是文章内容这里是文章内容这里是文章内容这里是文章内容这里是文章内容这里是文章内容这里是文章内容这里是文章内容这里是文章内容这里是文章内容这里是文章内容这里是文章内容这里是文章内容这里是文章内容这里是文章内容这里是文章内容这里是文章内容这里是文章内容这里是文章内容这里是文章内容这里是文章内容这里是文章内容这里是文章内容这里是文章内容这里是文章内容这里是文章内容这里是文章内容这里是文章内容内容
-			</div>
--->
+					{% autoescape off %}{{ article.content|striptags|truncatechars:400 }} {% endautoescape %}
+				</div>
+			{% endfor %}
 		</div>
+		
 		<div class="col-md-3">搜索历史</div>
-	</div>
+	
 </div>
 
 <!--
@@ -74,28 +86,28 @@
 
 <div class="container text-center" style="margin-bottom:80px">
 		<div class="pagination">
-	    {% if articles.has_previous %}
-	        <a href="?{{ articless.previous_page_number.querystring }}" class="prev">&lsaquo;&lsaquo; {% trans "上一页" %}</a>
-	    {% else %}
-	        <span class="disabled prev">&lsaquo;&lsaquo; {% trans "上一页" %}</span>
-	    {% endif %}
-	    {% for page in articles.pages %}
-	        {% if page %}
-	            {% ifequal page articles.number %}
-	                <span class="current page">{{ page }}</span>
-	            {% else %}
-	                <a href="?{{ page.querystring }}" class="page">{{ page }}</a>
-	            {% endifequal %}
-	        {% else %}
-	            ...
-	        {% endif %}
-	    {% endfor %}
-	    {% if articlss.has_next %}
-	        <a href="?{{ articles.next_page_number.querystring }}" class="next">{% trans "下一页" %} &rsaquo;&rsaquo;</a>
-	    {% else %}
-	        <span class="disabled next">{% trans "下一页" %} &rsaquo;&rsaquo;</span>
-	    {% endif %}
-	</div>
+		    {% if articles.has_previous %}
+		        <a href="?{{ articles.previous_page_number.querystring }}" class="prev">&lsaquo;&lsaquo; {% trans "上一页" %}</a>
+		    {% else %}
+		        <span class="disabled prev">&lsaquo;&lsaquo; {% trans "上一页" %}</span>
+		    {% endif %}
+		    {% for page in articles.pages %}
+		        {% if page %}
+		            {% ifequal page articles.number %}
+		                <span class="current page">{{ page }}</span>
+		            {% else %}
+		                <a href="?{{ page.querystring }}" class="page">{{ page }}</a>
+		            {% endifequal %}
+		        {% else %}
+		            ...
+		        {% endif %}
+		    {% endfor %}
+		    {% if articles.has_next %}
+		        <a href="?{{ articles.next_page_number.querystring }}" class="next">{% trans "下一页" %} &rsaquo;&rsaquo;</a>
+		    {% else %}
+		        <span class="disabled next">{% trans "下一页" %} &rsaquo;&rsaquo;</span>
+		    {% endif %}
+			</div>
 </div>
 
 
