@@ -5,6 +5,9 @@ from django.db.models import Q
 # Create your views here.
 from operation.models import LogMessage
 from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
+
+import json
+
 # 主页视图函数
 def IndexView(request):
     if request.method == 'GET':
@@ -83,7 +86,7 @@ def SearchList(request):
 
         # 历史搜索填充函数
         historys = LogMessage.objects.all().order_by('-date')[:10]
-
+        count = articles.count()
 
 
 
@@ -119,5 +122,18 @@ def SearchList(request):
         articles = p.page(page)
     context = {"articles":articles, 'search_keywords': search_keywords,
                 'sort':sort,'comment_nums':comment_nums,'time':time,'alls':alls,
-                'historys':historys}
+                'historys':historys,'count':count}
     return render(request,'search_list.html',context=context)
+
+
+# 智能提示视图函数
+def suggest(request):
+    if request.method == 'GET':
+        keywords = request.GET.get('keywords','')
+     
+        articles = JobboleArticle.objects.all()  # 全部queryset对象
+        data = articles.filter(title__icontains=keywords)[:5] # 查询匹配语句
+        result = []
+        for i in data:
+            result.append(i.title)
+    return HttpResponse(json.dumps(result), content_type ='application/json')

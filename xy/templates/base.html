@@ -11,6 +11,12 @@
 	user-scalable=no :用户能否在移动端能否缩放页面，默认no
 	maxinum-scale=1.0, mininum-scale=1.0　设置了页面最大和最小的缩放的级别
 	-->
+	<style type="text/css">
+		.p-result:hover {
+			background-color:#f8f8f8;
+			cursor:pointer;
+		}
+	</style>
 	<!--css 插件-->
     <link rel="stylesheet" href="{% static "css/bootstrap.min.css" %} ">
     {% block css %}{% endblock %}
@@ -37,8 +43,9 @@
 
 {% include "footer.html" %}
 <!--js　and jquery 插件　　记得放在最下面！！-->
-{% block javascript %} {% endblock %}
+
 <script src="{% static "jquery/jquery-3.3.1.min.js" %} "></script>
 <script src="{% static "js/bootstrap.min.js" %}  "></script>
+{% block javascript %} {% endblock %}
 </body>
 </html>

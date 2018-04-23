@@ -22,12 +22,20 @@
 -->
 <div class="container-fulid">
 	
-		<form class="form-inline" role="form" method="get" action="{% url 'search:search_list' %}">
+		<form class="form-inline" role="form" method="get" action="{% url 'search:search_list' %}" autocomplete="off">
 			{% csrf_token %}
 			<div class="form-group">
 				<label class="sr-only" for="name">名称</label>
-				<input  style="width:500px;height:40px;" type="text" name="keywords" class="form-control" id="name" value="{{ search_keywords }}" 
+				<input  style="width:500px;height:40px;" type="text"  name="keywords" class="form-control" id="keywords" value="{{ search_keywords }}" 
 					   placeholder="输入查询字段">
+
+				<!--智能提示的搜索下拉框-->
+				<div id='shuru' style="border:1px solid #ccc;background:#fff;position:absolute;z-index:5;width:500px;">
+
+
+				</div>
+
+
 			</div>
 
 			<button style="height:40px;"  type="submit" class="btn btn-success">搜索一下</button>
@@ -50,8 +58,13 @@
     </div>
     </div>
 </nav>
+
 <div class="container">
-	
+	<div class="row text-right" style="height:35px;" >
+		<div class="col-md-8"></div>
+		<div class="col-md-2 text-left">共<span style="color:green;font-size:20px;">{{ count }}</span>个搜索结果</div>
+		<div class="col-md-2"></div>
+	</div>
 	<div class="row">
 		<div class="col-md-9">
 			{% for article in articles.object_list %}
@@ -118,5 +131,54 @@
 			</div>
 </div>
 
-
 {% endblock %}
+
+
+{% block javascript %}
+
+<script type="text/javascript">
+//智能提示js代码
+	function suggest(){
+		$.ajax({
+		type:'get',
+		url:'/search/suggest/',
+		data:{keywords:$('#keywords').val()}, //通过id获取值
+		success:function(data){  //这里的data是后台函数传回来的数据,这里是json字符串
+			
+				$('#shuru').children().remove();
+			
+			// 动态写入下拉框
+			for(var i=0;i<data.length;i++){
+				$("#shuru").append('<p class="text-left p-result" onclick="inputValue(this)">'+data[i]+'<p>');
+			}
+			// input没有输入内容的时候吧下拉框删除
+			if($('#keywords').val()==''&&$('#shuru').children().length!=0){
+				$('#shuru').children().remove();
+			}
+		},
+
+	})
+	}
+	// 对下拉框状态监控
+	$('#keywords').bind(' input propertychange ',function(){
+				if(this.val!=''){
+					suggest();
+				}
+			}
+
+		);
+		// $('#shuru').on('click',function(){
+		// 	var a = $(this).val()
+		// 	$('#keywords').html(`${a}`);
+		// })
+	// 点击提示的内容可以赋值给input标签的value
+	function inputValue(obj){
+		var thisObj=$(obj);//js对象转jquery对象  
+		values = thisObj.text();
+		// console.log(values);// 获点击对象的值
+		document.getElementById("keywords").value = values; // 赋值给input框的value
+		$('#shuru').children().remove();  // 点击成功后删除下拉框
+	}
+</script>
+
+ {% endblock %}
