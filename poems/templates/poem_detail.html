@@ -50,7 +50,7 @@
 			
 	</div>
 	<div class="col-md-4 text-center">
-			<h3 class="page-header">作者介绍</h3>
+			<h3 class="page-header">诗人介绍</h3>
 
 			
 	</div>
@@ -64,7 +64,7 @@
 		<div class="panel-heading">
 		<span style="font-size:35px">  {{ poem.title }}</span>
 		    <hr>
-		    	<p style="font-size:25px">{{ poem.author }}</p>
+		    	<p style="font-size:25px"><a href="{% url 'all_poems:poet'  poem.author_id %}">{{ poem.author.name }}</a></p>
 		    	<p style="font-size:35px">{{ poem.content|linebreaksbr  }}</p>
 				
 			</div>
@@ -78,9 +78,6 @@
 		</div>
 		<br>
 		
-
-
-
 	<!--col-md-8结束标签-->
 	</div>
 
@@ -93,8 +90,17 @@
 	<div class="col-md-4 text-center">
 			<div class="panel panel-default " > 
 			    <div class="panel-heading text-left" >			 
-					<p>{{ poem.about_author|linebreaksbr }}</p>
+					<p>{{ author.about_author|linebreaksbr }}</p>
 				</div>
+			</div>	
+			<h3>诗人其他诗集</h3>
+			<div class="panel panel-default " > 
+						
+			    <div class="panel-heading" >
+			    	{% for author_poem in author_poems  %}		 
+					<span class="right-poems" ><a href="{% url 'all_poems:poem_detail' author_poem.id %}">{{ author_poem.title }}</a></span>
+					{% endfor  %}	
+					</div>
 			</div>	
 	</div>
 <!--container结束标签-->
@@ -104,7 +110,7 @@
 	<div class="col-md-8 ">
 		<h2 class="text-center">所有评论</h2>
 		<hr>
-		<p>小明说：诗词真优美</p>
+		<p>小明：诗词真优美</p>
 	</div>
 </div>
 

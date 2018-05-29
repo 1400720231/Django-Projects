@@ -18,7 +18,9 @@ from django.contrib import admin
 from django.views.generic import TemplateView 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    # all_poems的映射
+    # all_poems应用的映射
     url(r'^all_poems/',include('all_poems.urls',namespace="all_poems")),
+    # user应用的映射
+    url(r'^user/',include('user.urls',namespace="user")),
  
 ]

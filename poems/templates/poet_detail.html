@@ -46,7 +46,7 @@
 <!--导航栏-->
 <div class="container">
 	<div class="col-md-8 text-center">	
-			<h1 class="page-header">全部诗词</h1>
+			<h1 class="page-header">诗人介绍</h1>
 	</div>
 	<div class="col-md-4 text-center">
 			<h1 class="page-header">推荐诗词</h1>
@@ -57,15 +57,21 @@
 <!--左边-->
 <div class="container">
 	<div class="col-md-8 text-center ">	
+		<div class="panel panel-default">
+		    <div class="panel-heading"><a href="{% url 'all_poems:poet' poet.id %}">{{ poet.name }}</a>
+		    <hr>
+		    	<p>{{ poet.about_author }}</p>
+		    	
+			</div>
+		</div>
+		<br>
+		<h2>所有诗词</h2>
 		{% for poem in all_poems.object_list %}
 		<div class="panel panel-default">
-
-		
 		    <div class="panel-heading"><a href="{% url 'all_poems:poem_detail' poem.id %}">{{ poem.title }}</a>
 		    <hr>
-		    	<p>{{ poem.author }}</p>
-		    	<p>{{ poem.content|linebreaksbr  }}</p>
-				
+		    	<p>{{ poem.content }}</p>
+		    	
 			</div>
 		</div>
 		<br>
