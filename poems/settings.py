@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'all_poems',
     'user',
     'pure_pagination',  # 分页插件
+    'operation',
 ]
 
 MIDDLEWARE = [

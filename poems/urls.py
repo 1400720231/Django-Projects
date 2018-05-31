@@ -22,5 +22,6 @@ urlpatterns = [
     url(r'^all_poems/',include('all_poems.urls',namespace="all_poems")),
     # user应用的映射
     url(r'^user/',include('user.urls',namespace="user")),
+    url(r'^operation/',include('operation.urls',namespace="operation")),
  
 ]
