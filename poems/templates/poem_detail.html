@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+{% load staticfiles  %}
+{% load i18n %} 
+<!--注意我的css等路径前面有个lib因为我把bootstrap下面的css js jquery都放在lib这个文件夹里面了-->
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">  <!--告诉IE浏览器用最新的浏览器渲染这个页面-->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!--
+	width=device-width, initial-scale=1.0 是bootstrap默认的初始值,下面三个是可选的
+	user-scalable=no :用户能否在移动端能否缩放页面，默认no
+	maxinum-scale=1.0, mininum-scale=1.0　设置了页面最大和最小的缩放的级别
+	-->
+	<!--css 插件-->
+    <link rel="stylesheet" href="{% static "css/bootstrap.min.css" %} ">
+    {% block css %}
+    <!--右边推荐诗词的样式css-->
+    <style type="text/css">
+    	
+    	.right-poems{
+    		display:inline-block; 
+    		color:#1e577d;
+    		border:1px solid #e2e0c7;
+    		border-radius:5px;
+    		padding:6px 8px 6px 8px; 
+    		margin-top:8px
+    	}
+    	.panel-heading {
+    		position: relative;
+    	}
+    	.panel-heading .poem-top-container {
+    		position: absolute;
+    		top: 16px;
+    		right: 10px;
+    	}
+    	.panel-heading .poem-top-item {
+    		display: inline-block;
+    		cursor: pointer;
+    		width: 30px;
+    		height: 30px;
+    		line-height: 26px;
+    		border: 2px solid #989595;
+    		border-radius: 50%;
+    		margin: 0 6px;
+    		font-size: 16px;
+    		color: #989595;
+    	}
+    </style>
+
+    {% endblock %}
+    <!--自定义css-->
+    {# <link rel="stylesheet" type="text/css" href="css/style.css"> #}
+	<title>{% block titles %}{% endblock %}</title>
+</head>
+<body style="background-color:#E1E0C7">
+
+
+{% include "header.html" %}
+{% block page %}
+
+{% endblock %}
+{% block content %} 
+	
+<!--导航栏-->
+<div class="container">
+	<div class="col-md-4 text-center">	
+			<h3 class="page-header">诗词详情</h3>
+	</div>
+	<div class="col-md-4 text-center">	
+			
+	</div>
+	<div class="col-md-4 text-center">
+			<h3 class="page-header">诗人介绍</h3>
+
+			
+	</div>
+	
+</div>
+
+<!--左边-->
+<div class="container">
+	<div class="col-md-8 text-center ">	
+		<div class="panel-heading" style="background-color:#f0efe2">
+			<div class="poem-top-container">
+				<span class="poem-top-item"><a href="#" onclick=voice({{ poem.id }})>读</a></span>	
+				<span class="poem-top-item">
+					<a href="https://baike.baidu.com/item/{{ poem.title }}">百</a>
+				</span>
+				<span class="poem-top-item">
+					<a href="?pingyin_statue=get">拼</a>
+				</span>
+			</div>
+
+		<span style="font-size:35px; ">  {{ poem.title }}</span>
+
+		<!--语音播报实现
+		<a href="#" onclick=voice({{ poem.id }})><span  class="glyphicon glyphicon-volume-up" style="display:inline-block margin-left:3px"></span>  </a>-->
+		    <hr style="height:1px;border:none;border-top:1px solid #e2e0c7" />
+		    	<p style="font-size:25px"><a href="{% url 'all_poems:poet'  poem.author_id %}">{{ poem.author.name }}</a></p>
+		    	{% if result %}
+			    	{% for i in result %}
+					<span style="{% if forloop.counter|divisibleby:2 != 0 %} font-size:33px {% endif %}"> {{ i|safe|linebreaksbr   }}</span>
+					{% endfor %}
+				{% else%}
+					<p style="font-size:25px">{{ poem.content|linebreaksbr }}</p>
+				{% endif %}
+		    	<hr style="height:1px;border:none;border-top:1px solid #e2e0c7" />
+		<!--点赞-->
+
+		{% if praise_statue == 0 %}
+		    	<a href="{% url 'operation:praise' poem.id %}" style="margin-left:450px;margin-right:10px"><span class="glyphicon glyphicon-heart-empty"  style="font-size: 15px;"></span></a>
+		{% else %}
+				<a href="{% url 'operation:praise' poem.id %}" style="margin-left:450px;margin-right:10px"><span class="glyphicon glyphicon-heart"  style="font-size: 15px;"></span></a>
+		{% endif %}
+		    	<span><span class="glyphicon glyphicon-thumbs-up"></span> {{ praise_num }}</span>
+				
+			</div>
+		<br>
+		
+		<div class="panel panel-default text-left"　>
+		    <div class="panel-heading" style="background-color:#f0efe2;">
+		    <p>译文：</p>
+		    <p　>{{ poem.explains }}</p>
+			</div>
+		</div>
+		<br>
+		
+	<!--col-md-8结束标签-->
+	</div>
+
+
+
+
+
+
+<!--右边-->
+	<div class="col-md-4 text-center" >
+			<div class="panel panel-default " > 
+			    <div class="panel-heading text-left" style="background-color:#f0efe2">			 
+					<p>{{ author.about_author|linebreaksbr }}</p>
+				</div>
+			</div>	
+			<h3>诗人其他诗集</h3>
+			<div class="panel panel-default " style="background-color:#f0efe2"> 
+						
+			    <div class="panel-heading" style="background-color:#f0efe2">
+			    	{% for author_poem in author_poems  %}		 
+					<span class="right-poems" ><a href="{% url 'all_poems:poem_detail' author_poem.id %}">{{ author_poem.title }}</a></span>
+					{% endfor  %}	
+					</div>
+			</div>	
+	</div>
+<!--container结束标签-->
+</div>
+<!--所有评论-->
+<div class="container">
+	<div class="col-md-8 ">
+		<h2 class="text-center">所有评论</h2>
+		<p>评论数：{{ nums }}</p>
+		<hr>
+		{% for comment in comments.object_list %}
+		<p>{{ comment.user.username }}:     {{ comment.comments }}---{{ comment.date_time }}</p>
+		{% endfor %}
+		<form method="post" action="{% url 'operation:comments' poem.id %}" >
+			{{ comment_form.as_p }}
+			{% csrf_token %}
+			<button>评论</button>
+
+			<br><br><br><br><br>
+			<!--分页-->
+			<p class="text-center">
+				    {% if comments.has_previous %}
+				        <a href="?{{ comments.previous_page_number.querystring }}" class="prev">&lsaquo;&lsaquo; {% trans "上一页" %}</a>
+				    {% else %}
+				        <span class="disabled prev">&lsaquo;&lsaquo; {% trans "上一页" %}</span>
+				    {% endif %}
+				    {% for page in comments.pages %}
+				        {% if page %}
+				            {% ifequal page comments.number %}
+				                <span class="current page">{{ page }}</span>
+				            {% else %}
+				                <a href="?{{ page.querystring }}" class="page">{{ page }}</a>
+				            {% endifequal %}
+				        {% else %}
+				            ...
+				        {% endif %}
+				    {% endfor %}
+				    {% if comments.has_next %}
+				        <a href="?{{ comments.next_page_number.querystring }}" class="next">{% trans "下一页" %} &rsaquo;&rsaquo;</a>
+				    {% else %}
+				        <span class="disabled next">{% trans "下一页" %} &rsaquo;&rsaquo;</span>
+				    {% endif %}
+			</p>
+			<br><br><br><br><br><br>
+		</form>
+	</div>
+
+
+		
+</div>
+{% endblock %}
+{% include "footer.html" %}
+<!--js　and jquery 插件　　记得放在最下面！！-->
+
+<script src="{% static "jquery/jquery-3.3.1.min.js" %} "></script>
+<script src="{% static "js/bootstrap.min.js" %}  "></script>
+{% block javascript %} 
+
+<script type="text/javascript">
+//声音播报
+function voice(poem_id){
+	$.ajax({
+
+		url:"{% url 'all_poems:voice' %}",
+		type:'POST',
+		data:{'id':poem_id},
+		success:function(e){
+			if(e='1'){
+				console.log('正在播放中...');
+			}else{
+				console.log('播放失败！');
+			}
+		},
+
+	});
+}
+
+//点赞
+function praise(poem_id){
+	$.ajax({
+		url:"/operation/praise/",
+		type:'POST',
+		data:{'id':poem_id},
+		success:function(e){
+			if(e='1'){
+				console.log('点赞成功...');
+			}else{
+				console.log('点赞失败');
+			}
+		},
+
+	});
+}
+</script>
+{% endblock %}
+</body>
+</html>

@@ -1,0 +1,40 @@
+{% load staticfiles %}
+<div class="container-fluid">
+<nav class="navbar navbar-default" role="navigation" style="background-color:#5c6146">
+    <div class="container-fluid">
+	    <div class="navbar-header">
+	        <a class="navbar-brand" href="#" style="color:#f0efe2">xx诗词鉴赏网</a>
+	        <a class="navbar-brand" href="{% url 'all_poems:all_poets' %}" style="color:#f0efe2">全部诗人</a>
+	        
+	        <a class="navbar-brand" href="{% url 'all_poems:all' %}" style="color:#f0efe2">全部诗词</a>
+	    </div>
+	    <div class="navbar-header">
+	        <form class="navbar-form navbar-left" autocomplete="off" role="search" action="{% url 'all_poems:search' %}">
+	            <div class="form-group">
+	                <input type="text" class="form-control" name="keywords"  placeholder="输入你想要的搜索内容">
+	            </div>
+	            <button type="submit" class="btn btn-default">搜索</button>
+	        </form>
+	        
+	    </div>
+	    <div class="navbar-right">
+       		<ul>
+			{% if user.is_authenticated %}
+			<a class="navbar-brand" href="#" style="color:#f0efe2">{{ user.username }}</a>
+			<a class="navbar-brand" href="{% url 'user:logout' %}" style="color:#f0efe2">Logout</a>
+			{% else %}
+			<a class="navbar-brand" href="{% url 'user:login' %}" style="color:#f0efe2">Login</a>
+			<a class="navbar-brand" href="{% url 'user:register' %}" style="color:#f0efe2">Register</a>
+			{% endif %}
+			
+			</ul>
+       
+    	</div>
+    </div>
+
+
+
+{% block page %}
+
+{% endblock %}
+</div>

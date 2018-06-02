@@ -1,0 +1,7 @@
+{% load staticfiles %}
+{% for i in result %}
+<span style="{% if forloop.counter|divisibleby:2 != 0 %} font-size:33px {% endif %}"> {{ i|safe|linebreaksbr   }}</span>
+
+
+
+{% endfor %}

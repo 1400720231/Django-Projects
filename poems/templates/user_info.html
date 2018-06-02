@@ -1,0 +1,70 @@
+{% extends 'user_base.html' %}
+{% block left %} 
+	<div class="text-center">
+			<br><br><br><br><br>
+				<form method="post" action="{% url 'user:info' %}">
+					{% csrf_token %}
+					<div class="row">
+						<div class="col-md-6  text-center">
+							<h3>
+									<label for="{{info.username.id_for_label }}" class="col-md-5 control-label"><span></span>用户名</label>
+							</h3>
+						
+							<p class="col-md-6 text-center"> {{ info.username }} </p>
+						</div>
+					</div>
+					<div class="row ">
+						<div class="col-md-6 text-center">
+							<h3>
+							<label for="{{info.mobile.id_for_label }}" class="col-md-5 control-label"
+							><span ></span>电话</label>
+							</h3>
+							<p class="col-md-6 text-left">  {{ info.mobile }} </p>
+						</div>
+					</div>
+					
+					<div class="row ">
+						<div class="col-md-6">
+							<h3>
+							<label for="{{info.nickname.id_for_label }}" class="col-md-5 control-label"
+							><span ></span>昵称</label>
+							</h3>
+							<p class="col-md-6 text-right">  {{ info.nick_name  }} </p>
+						</div>
+					</div>
+					<div class="row text-center">
+						<div class="col-md-6">
+							<h3>
+							<label for="{{info.gender.id_for_label }}" class="col-md-5 control-label"
+							><span ></span>性别</label>
+							</h3>
+							<p class="col-md-6 text-left"> {{ info.gender }}</p>
+						</div>
+					</div>		
+					<div class="row text-center">
+						<div class="col-md-6">
+							<h3>
+							<label for="{{info.address.id_for_label }}" class="col-md-5 control-label"
+							><span ></span>地址</label>
+							</h3>
+							<p class="col-md-6 text-left"> {{ info.address }}</p>
+						</div>
+					</div>	
+					<div class="row text-center">
+						<div class="col-md-6">
+							<h3>
+							<label for="{{info.birth.id_for_label }}" class="col-md-5 control-label"
+							><span ></span>生日</label>
+							</h3>
+							<p class="col-md-6 text-left"> {{ info.birth }}</p>
+						</div>
+					</div>
+					<div class="row text-center" >
+						<div class="col-md-6 "><input type="submit" class="btn btn-primary btn-lg"  value="修改"></div>
+					</div>
+					
+				</form>
+	    	</div>
+	
+{% endblock %} 
+{% block right%} 77777{% endblock %}
