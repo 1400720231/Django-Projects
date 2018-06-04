@@ -59,8 +59,6 @@
 	<div class="col-md-8 text-center ">	
 		{% for poem in all_poems.object_list %}
 		<div class="panel panel-default">
-
-		
 		    <div class="panel-heading" style="background-color:#f0efe2"><a href="{% url 'all_poems:poem_detail' poem.id %}">{{ poem.title }}</a>
 		    <hr style="height:1px;border:none;border-top:1px solid #e2e0c7" />
 		    	<p>{{ poem.author }}</p>
@@ -84,26 +82,26 @@
 
 
 <!--右边-->
-	<div class="col-md-4 text-center">
-			<div class="panel panel-default " > 
-			    <div class="panel-heading" >	
+	<div class="col-md-4 text-center" >
+			<div class="panel panel-default"  style="background-color:#f0efe2"> 
+			    <div class="panel-heading" style="background-color:#f0efe2">	
 			    {% for poem in poems  %}		 
 					<span class="right-poems" ><a href="{% url 'all_poems:poem_detail' poem.id %}">{{ poem.title }}</a></span>
 				{% endfor  %}
 				</div>
 			</div>	
 			<h2>标签</h2>
-			<div class="panel panel-default " > 
+			<div class="panel panel-default " style="background-color:#f0efe2" > 
 						
-			    <div class="panel-heading" >
+			    <div class="panel-heading" style="background-color:#f0efe2" >
 			    	{% for poem in poems  %}		 
 					<span class="right-poems" ><a href="{% url 'all_poems:poem_detail' poem.id %}">{{ poem.tag }}</a></span>
 					{% endfor  %}	
-				    
-				    
-					</div>
+
+				</div>
 			</div>	
 	</div>
+
 <!--container结束标签-->
 </div>
 

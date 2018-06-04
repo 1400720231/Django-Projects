@@ -72,7 +72,7 @@
 		    <div class="panel-heading"style="background-color:#f0efe2">
 		    <a href="{% url 'all_poems:poem_detail' poem.id %}">{{ poem.title }}</a>
 		    <hr>
-		    	<p>{{ poem.content }}</p>
+		    	<p>{{ poem.content|linebreaksbr  }}</p>
 		    	
 			</div>
 		</div>

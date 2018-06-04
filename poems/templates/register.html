@@ -5,17 +5,17 @@
 <div class="container">
 <br><br><br><br><br><br><br><br><br><br><br><br><br>
 	<div class="row text-center vertical-middle-sm">
-		<h1>Register</h1>
+		<h1>注册</h1>
 		<form class="form-horizontal" acction="." method="post" style="">
 			<div class="form-group">
 				<label for="{{form.username.id_for_label }}" class="col-md-5 control-label"
-				style="color:red"><span class="glyphicon glyphicon-user"></span>Username</label>
+				style="color:red"><span class="glyphicon glyphicon-user"></span>用户名</label>
 			
 				<div class="col-md-6 text-left"> {{ form.username }} </div>
 			</div>
 			<div class="form-group">
 					<label for="{{form.password.id_for_label }}" class="col-md-5 control-label"
-					style="color:blue"><span class="glyphicon glyphicon-floppy-open"></span>Password</label>
+					style="color:blue"><span class="glyphicon glyphicon-floppy-open"></span>密码</label>
 				<div class="col-md-6 text-left"> {{ form.password }} </div>
 			</div>
 			{% if mes != '' %}

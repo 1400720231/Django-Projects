@@ -83,12 +83,20 @@
 	<div class="col-md-8 text-center ">	
 		<div class="panel-heading" style="background-color:#f0efe2">
 			<div class="poem-top-container">
+			<!--语音播报实现-->
 				<span class="poem-top-item"><a href="#" onclick=voice({{ poem.id }})>读</a></span>	
 				<span class="poem-top-item">
-					<a href="https://baike.baidu.com/item/{{ poem.title }}">百</a>
+				<!--百度百科跳转-->
+					<a href="https://baike.baidu.com/item/{{ poem.title }}" target='blank'>百</a>
 				</span>
 				<span class="poem-top-item">
+				<!--拼音功能链接-->
+				{% if not pingyin_statue %}
 					<a href="?pingyin_statue=get">拼</a>
+				{% else %}
+					<a href="{% url 'all_poems:poem_detail' poem.id %}">拼</a>
+				{% endif %}
+				
 				</span>
 			</div>
 
@@ -103,7 +111,7 @@
 					<span style="{% if forloop.counter|divisibleby:2 != 0 %} font-size:33px {% endif %}"> {{ i|safe|linebreaksbr   }}</span>
 					{% endfor %}
 				{% else%}
-					<p style="font-size:25px">{{ poem.content|linebreaksbr }}</p>
+					<span style="font-size:25px">{{ poem.content|linebreaksbr }} </span> 
 				{% endif %}
 		    	<hr style="height:1px;border:none;border-top:1px solid #e2e0c7" />
 		<!--点赞-->
@@ -114,15 +122,19 @@
 				<a href="{% url 'operation:praise' poem.id %}" style="margin-left:450px;margin-right:10px"><span class="glyphicon glyphicon-heart"  style="font-size: 15px;"></span></a>
 		{% endif %}
 		    	<span><span class="glyphicon glyphicon-thumbs-up"></span> {{ praise_num }}</span>
-				
+
+		    	<!--网页分享链接-->
+				<span class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a><a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a></span>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdPic":"","bdStyle":"0","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
 			</div>
 		<br>
 		
 		<div class="panel panel-default text-left"　>
 		    <div class="panel-heading" style="background-color:#f0efe2;">
-		    <p>译文：</p>
-		    <p　>{{ poem.explains }}</p>
+			    <p>译文：</p>
+			    <p　>{{ poem.explains }}</p>
 			</div>
+
 		</div>
 		<br>
 		

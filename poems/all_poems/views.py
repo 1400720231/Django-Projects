@@ -40,7 +40,6 @@ def All_Poems(request):
 
 # 某个诗词详情展示页面
 def Poem_Detail(request,poem_id):
-
     comment_form = CommentsForm()
     # 根据poem_id获取的目标诗对象
     poem = Poems.objects.get(id=poem_id)
@@ -65,8 +64,7 @@ def Poem_Detail(request,poem_id):
         statue = Praise.objects.filter(user=request.user,poem=poem)
         if statue:
             praise_statue=1
-
-#拼音功能
+    #拼音功能
     result =[]
     temp =[]
     pingyin_statue = request.GET.get('pingyin_statue','')
@@ -85,13 +83,10 @@ def Poem_Detail(request,poem_id):
             result.append(i+'\n')
             temp =[]
 
-            
-
-
     context = {'poem':poem,'author':author,'author_poems':author_poems,
                 'comments':comments,'comment_form':comment_form,
                 'nums':nums,'praise_num':praise_num,'praise_statue':praise_statue,
-                'result':result}
+                'result':result,'pingyin_statue':pingyin_statue}
     return render(request,'poem_detail.html',context=context)
 
 
@@ -141,7 +136,9 @@ def Voice(request):
     poem = Poems.objects.get(id=poem_id)
     title = poem.title
     content = poem.content
+    # 获取语音链接
     order = voice(title,content)
+    # 利用os模块执行语音链接来实现语音播报
     os.system(order)
     return HttpResponse('1')
 
@@ -177,22 +174,3 @@ def SearchList(request):
         return render(request,'all_poems.html',context=context)
 
 
-def Get_Pinyin(request):
-    from xpinyin import Pinyin
-
-    words = '故人西辞黄鹤楼，烟花三月下扬州。\n孤帆远影碧空尽，唯见长江天际流。'
-    result =[]
-    temp =[]
-    p = Pinyin()
-    for i in words.split('\n'):
-    # 生成拼音
-        a = p.get_pinyin(i,show_tone_marks=True).split('-')
-        for j in a:
-            j = j+'&nbsp'*(6-len(j))
-            temp.append(j)
-        result.append(''.join(temp)+'\n')
-        result.append(i+'\n')
-        temp =[]
-            
-    context ={'result':result}
-    return render(request,'test.html',context=context)
