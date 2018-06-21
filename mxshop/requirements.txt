@@ -1,0 +1,7 @@
+python3.5.2
+pip install django==1.10
+pip install djangorestframe
+pip install markdown
+# 支持python3 的mysql驱动
+pip install mysqlclient  
+pip install pillow

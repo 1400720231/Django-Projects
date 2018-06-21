@@ -1,0 +1,35 @@
+{
+  "name": "vue-date",
+  "version": "1.1.10",
+  "description": "datepicker component for Vue.js",
+  "repository": "showonne/vue-date",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "exit 0",
+    "dev": "poi index.js",
+    "docs": "poi build index.js --out-dir docs --public-path /vue-date",
+    "build": "webpack",
+    "prepublishOnly": "npm run build"
+  },
+  "files": [
+    "src"
+  ],
+  "keywords": [
+    "datepicker",
+    "vue",
+    "date"
+  ],
+  "author": "showonne",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/plugin-transform-runtime": "^7.0.0-beta.46",
+    "@babel/preset-env": "^7.0.0-beta.46",
+    "@babel/preset-stage-0": "^7.0.0-beta.46",
+    "less": "^3.0.2",
+    "less-loader": "^4.1.0",
+    "poi": "^10.1.5",
+    "webpack-cli": "^2.1.2"
+  },
+  "_from": "vue-date@1.1.10",
+  "_resolved": "http://registry.npm.taobao.org/vue-date/download/vue-date-1.1.10.tgz"
+}
