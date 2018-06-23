@@ -47,6 +47,8 @@ INSTALLED_APPS = [
     'goods',
     'trade',
     'user_operation',
+    'xadmin',
+    'crispy_forms'
 ]
 
 MIDDLEWARE = [
@@ -125,15 +127,15 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'zh-hans'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Shanghai'
 
 USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False # 默认是True,时间是utc时间,由于我们要用本地时间,所有false
 
 
 # Static files (CSS, JavaScript, Images)
@@ -143,3 +145,12 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
+
+
+
+MEDIA_URL = '/media/'  # 不能随便取 因为用的时候src="{{MEDIA_URL}}/image/..."表示按照这个路径找
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+"""
+MEDIA_ROOT只能设置一个，不然她不知道到底存放再哪里，和static不同，static是准备取出来用的，可以到设置的目录里找就行了，
+但是MEDIA_ROOT是为了保存上传文件的地方，你要是设置多个，他不晓得存在什么地方。可以，没毛病！
+"""

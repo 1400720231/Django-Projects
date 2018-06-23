@@ -5,12 +5,14 @@ from datetime import datetime
 #三方包
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from django.contrib.auth.models import AbstractUser
+
 
 
 # 自定义的包
 
 
+
+# 个人信息
 class UserProfile(AbstractUser):
 	"""
 	用户数据表
@@ -26,7 +28,7 @@ class UserProfile(AbstractUser):
 		verbose_name_plural = verbose_name
 
 	def __str__(self):
-		return self.name
+		return self.username
 
 
 class VerifyCode(models.Model):
@@ -37,8 +39,8 @@ class VerifyCode(models.Model):
 		default=datatime.now 生成的时间是记录生成的时间，即数据库实例化的时间
 		default=datatime.now() 生成的时间是代码编译的时间
 	"""
-	code =models.CharField(max_length=10, verbose_name='验证码')
-	mobile = models.CharField(max_length=11,verbose_name='电话')
+	code =models.CharField(max_length=10, default ='',verbose_name='验证码')
+	mobile = models.CharField(max_length=11,verbose_name='电话',default='')
 	add_time = models.DateTimeField(default=datetime.now, verbose_name='添加时间')
 
 	class Meta:

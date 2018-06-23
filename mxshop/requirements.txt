@@ -5,3 +5,15 @@ pip install markdown
 # 支持python3 的mysql驱动
 pip install mysqlclient  
 pip install pillow
+xadmin地址:https://github.com/sshwsfc/xadmin
+xadmin所需依赖包：
+django-crispy-forms>=1.6.0 　--->pip install django_crispy_forms
+django-import-export>=0.5.1　　--->pip install django_import_export
+django-reversion>=2.0.0　　--->pip install reversion
+django-formtools==1.0　　---> pip install django_formtools
+future==0.15.2　　--->pip install future
+httplib2==0.9.2 　---> pip install httplib2
+six==1.10.0　　---> pip install six
+# excel导入导出的安装依赖
+pip install lsxwriter
+pip install xlsxwriter
