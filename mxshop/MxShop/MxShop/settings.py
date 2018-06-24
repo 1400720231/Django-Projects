@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 import os
 import sys
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+# 表示最外面的那个MxShop文件夹的路径,注意是路径.,不是文件夹的名字.
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # 把第三方路插入django项目文件环境路径,可直接import apps中的包 而不用from apps import ...
 # sys.path.insert(0, BASE_DIR)

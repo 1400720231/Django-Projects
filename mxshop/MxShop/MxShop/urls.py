@@ -17,7 +17,11 @@ from django.conf.urls import url,include
 # from django.contrib import admin
 # 导入xadmin把admin全部用admin代替即可,其他不变
 import xadmin
+from MxShop.settings import MEDIA_ROOT
+from django.views.static import serve
 urlpatterns = [
     url(r'^xadmin/', xadmin.site.urls),
     url(r'^ueditor/',include('DjangoUeditor.urls' )),
+    # medai访问服务配置
+    url(r'^media/(?P<path>.*)$',serve,{'document_root':MEDIA_ROOT}),
 ]
