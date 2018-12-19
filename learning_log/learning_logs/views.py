@@ -101,6 +101,17 @@ def edit_entry(request, entry_id):
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse('learning_logs:topic', args=[topic.id]))
+        """
+            因为EntryForm中有model=Entry，所以form保存的时候需要知道是那个实例的对象，
+        要么想上面一样实例化的时候加护当前实例对象EntryForm(instance=entry,data=request.POST)，
+        或者想下面一样form.save(commit=False),再指定主键form.id =entry.id
+        form = EntryForm(data=request.POST)  # data表示提交的内容
+        if form.is_valid():
+            form.save(commit=False)
+            form.id =entry.id
+            form.save()
+            return HttpResponseRedirect(reverse('learning_logs:topic', args=[topic.id]))
+        """
 
     context = {'entry': entry, 'topic': topic, 'form': form}
     return render(request,'learning_logs/edit_entry.html', context)
